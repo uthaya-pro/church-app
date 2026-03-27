@@ -1,0 +1,68 @@
+<div class="page-container">
+  <header class="page-header">
+    <button class="back-btn" (click)="goBack()">← Back</button>
+    <h1 class="page-title">Member Profile</h1>
+  </header>
+
+  <main class="page-content">
+    <ng-container *ngIf="member() as m">
+      <div *ngIf="!editMode()" class="profile-view">
+        <div class="profile-info">
+          <h2>{{ m.name }}</h2>
+          <p><strong>Email:</strong> {{ m.email }}</p>
+          <p><strong>Phone:</strong> {{ m.phone }}</p>
+          <p><strong>Age:</strong> {{ m.age }}</p>
+          <p><strong>Role:</strong> {{ m.role }}</p>
+          <p><strong>Status:</strong> {{ m.status }}</p>
+          <p><strong>Joined:</strong> {{ m.joinDate | date:'mediumDate' }}</p>
+        </div>
+        <div class="profile-actions">
+          <button (click)="enableEdit()" class="edit-btn">Edit</button>
+          <button (click)="deleteMember()" class="delete-btn">Delete</button>
+        </div>
+      </div>
+
+      <div *ngIf="editMode()" class="profile-edit">
+        <form (ngSubmit)="saveChanges()">
+          <div class="form-row">
+            <label>Name</label>
+            <input [(ngModel)]="edited.name" name="name" required />
+          </div>
+          <div class="form-row">
+            <label>Email</label>
+            <input [(ngModel)]="edited.email" name="email" required type="email" />
+          </div>
+          <div class="form-row">
+            <label>Phone</label>
+            <input [(ngModel)]="edited.phone" name="phone" required />
+          </div>
+          <div class="form-row">
+            <label>Role</label>
+            <input [(ngModel)]="edited.role" name="role" required />
+          </div>
+          <div class="form-row">
+            <label>Status</label>
+            <select [(ngModel)]="edited.status" name="status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Age</label>
+            <input [(ngModel)]="edited.age" name="age" required />
+          </div>
+          
+          <div class="form-row">
+            <label>Join Date</label>
+            <input type="date" [(ngModel)]="edited.joinDate" name="joinDate" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="save-btn">Save</button>
+            <button type="button" class="cancel-btn" (click)="editMode.set(false)">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </ng-container>
+  </main>
+</div>

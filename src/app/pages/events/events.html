@@ -1,0 +1,96 @@
+<div class="page-container">
+	<header class="page-header">
+		<div class="header-content">
+			<button class="back-btn" (click)="goBack()">← Back</button>
+			<h1 class="page-title">Church Events</h1>
+		</div>
+	</header>
+
+	<main class="page-content">
+		@if (isLoading()) {
+			<div class="loading-state">
+				<div class="spinner"></div>
+				<p>Loading events...</p>
+			</div>
+		} @else {
+			<div class="add-event-form">
+				<h2>Register Event</h2>
+				<div class="form-row">
+					<input placeholder="Title" [value]="title()" (input)="title.set($any($event.target).value)" />
+					<input type="date" [value]="date()" (input)="date.set($any($event.target).value)" />
+					<input placeholder="Time" [value]="time()" (input)="time.set($any($event.target).value)" />
+					<input placeholder="Location" [value]="location()" (input)="location.set($any($event.target).value)" />
+					<input placeholder="Capacity" type="number" [value]="capacity()" (input)="capacity.set($any($event.target).value)" />
+					<textarea placeholder="Description" [value]="description()" (input)="description.set($any($event.target).value)"></textarea>
+					<button class="add-btn" (click)="addEvent()">Add Event</button>
+				</div>
+			</div>
+			<div class="events-grid">
+				@for (event of events(); track event.id) {
+					<div class="event-card">
+						<div class="event-header">
+							<h3 class="event-title">{{ event.title }}</h3>
+							<span class="event-time">{{ event.time }}</span>
+						</div>
+						<div class="event-body">
+							<p class="event-date">📅 {{ event.date | date: 'MMM d, y' }}</p>
+							<p class="event-location">📍 {{ event.location }}</p>
+							<p class="event-description">{{ event.description }}</p>
+						</div>
+						<div class="event-footer">
+							<div class="attendance">
+								<span class="attendance-text">{{ event.attendees }} / {{ event.capacity }} attendees</span>
+								<div class="progress-bar">
+									<div class="progress-fill" [style.width.%]="getAttendancePercentage(event.attendees, event.capacity)"></div>
+								</div>
+							</div>
+							<button class="event-btn" (click)="viewDetails(event)">View Details</button>
+						</div>
+					</div>
+				}
+			</div>
+			@if (events().length === 0) {
+				<div class="empty-state">
+					<p>No events scheduled</p>
+				</div>
+			}
+
+			@if (selectedEvent()) {
+				<div class="modal-overlay" (click)="closeDetail()">
+					<div class="modal-content event-detail-modal" (click)="$event.stopPropagation()">
+						<div class="modal-header">
+							<h2>{{ selectedEvent().title }}</h2>
+							<button class="close-btn" (click)="closeDetail()">✕</button>
+						</div>
+						<div class="modal-body">
+							<div class="detail-group">
+								<label>Date</label>
+								<p>{{ selectedEvent().date | date: 'MMMM d, yyyy' }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Time</label>
+								<p>{{ selectedEvent().time }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Location</label>
+								<p>{{ selectedEvent().location }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Description</label>
+								<p>{{ selectedEvent().description || 'No description' }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Capacity</label>
+								<p>{{ selectedEvent().attendees }} / {{ selectedEvent().capacity }} attendees</p>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="delete-btn" (click)="deleteEvent(selectedEvent().id)">Delete Event</button>
+							<button class="close-modal-btn" (click)="closeDetail()">Close</button>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</main>
+</div>

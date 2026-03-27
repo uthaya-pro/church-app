@@ -1,0 +1,125 @@
+<div class="page-container">
+	<header class="page-header">
+		<div class="header-content">
+			<button class="back-btn" (click)="goBack()">← Back</button>
+			<h1 class="page-title">Donations Management</h1>
+		</div>
+	</header>
+
+	<main class="page-content">
+		@if (isLoading()) {
+			<div class="loading-state">
+				<div class="spinner"></div>
+				<p>Loading donations data...</p>
+			</div>
+		} @else {
+			<div class="add-donation-form">
+				<h2>Add Donation</h2>
+				<div class="form-row">
+					<input placeholder="Donor name" [value]="donor()" (input)="donor.set($any($event.target).value)" />
+					<input type="number" placeholder="Amount" [value]="amount()" (input)="amount.set($any($event.target).value)" />
+					<select [value]="category()" (change)="category.set($any($event.target).value)">
+						<option>Tithes</option>
+						<option>Building Fund</option>
+						<option>General</option>
+						<option>Special Project</option>
+					</select>
+					<select [value]="method()" (change)="method.set($any($event.target).value)">
+						<option value="cash">Cash</option>
+						<option value="check">Check</option>
+						<option value="online">Online</option>
+						<option value="other">Other</option>
+					</select>
+					<input type="date" [value]="date()" (input)="date.set($event.target.value)" />
+					<button class="add-btn" (click)="addDonation()">Add Donation</button>
+				</div>
+			</div>
+			<div class="stats-section">
+				<div class="stat-card">
+					<p class="stat-label">Total Donations</p>
+					<p class="stat-value">${{ totalAmount() }}</p>
+				</div>
+				<div class="stat-card">
+					<p class="stat-label">Average Donation</p>
+					<p class="stat-value">${{ monthlyAverage() }}</p>
+				</div>
+				<div class="stat-card">
+					<p class="stat-label">Total Donors</p>
+					<p class="stat-value">{{ donations().length }}</p>
+				</div>
+			</div>
+
+			<div class="donations-table-container">
+				<table class="donations-table">
+					<thead>
+						<tr>
+							<th>Donor Name</th>
+							<th>Amount</th>
+							<th>Category</th>
+							<th>Method</th>
+							<th>Date</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (donation of donations(); track donation.id) {
+							<tr>
+								<td>{{ donation.donor }}</td>
+								<td class="amount">${{ donation.amount }}</td>
+								<td>
+									<span class="category-badge">{{ donation.category }}</span>
+								</td>
+								<td>
+									<span class="method-badge" [class]="'method-' + donation.method">
+										{{ donation.method | titlecase }}
+									</span>
+								</td>
+								<td>{{ donation.date | date: 'MMM d, y' }}</td>
+								<td>
+									<button class="view-btn" (click)="viewDetails(donation)">View</button>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+
+			@if (selectedDonation()) {
+				<div class="modal-overlay" (click)="closeDetail()">
+					<div class="modal-content donation-detail-modal" (click)="$event.stopPropagation()">
+						<div class="modal-header">
+							<h2>{{ selectedDonation().donor }} - Donation Details</h2>
+							<button class="close-btn" (click)="closeDetail()">✕</button>
+						</div>
+						<div class="modal-body">
+							<div class="detail-group">
+								<label>Donor Name</label>
+								<p>{{ selectedDonation().donor }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Amount</label>
+								<p class="amount-highlight">${{ selectedDonation().amount }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Category</label>
+								<p>{{ selectedDonation().category }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Method</label>
+								<p>{{ selectedDonation().method | titlecase }}</p>
+							</div>
+							<div class="detail-group">
+								<label>Date</label>
+								<p>{{ selectedDonation().date | date: 'MMMM d, yyyy' }}</p>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="delete-btn" (click)="deleteDonation(selectedDonation().id)">Delete Donation</button>
+							<button class="close-modal-btn" (click)="closeDetail()">Close</button>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</main>
+</div>

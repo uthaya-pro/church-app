@@ -1,0 +1,150 @@
+<div class="dashboard-container">
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Church CMS</h2>
+      <p class="sidebar-subtitle">Management System</p>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="menu-item active">
+        <span class="menu-icon">📊</span>
+        <span class="menu-text">Dashboard</span>
+      </li>
+      <li class="menu-item" (click)="navigateTo('members')">
+        <span class="menu-icon">👥</span>
+        <span class="menu-text">Members</span>
+      </li>
+      <li class="menu-item" (click)="navigateTo('events')">
+        <span class="menu-icon">📅</span>
+        <span class="menu-text">Events</span>
+      </li>
+      <li class="menu-item" (click)="navigateTo('donations')">
+        <span class="menu-icon">💰</span>
+        <span class="menu-text">Donations</span>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span class="menu-icon">🚪</span>
+        <span class="menu-text">Logout</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-left">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Welcome back, {{ userEmail() }}</p>
+      </div>
+      <div class="header-right">
+        <button class="header-btn">🔔</button>
+        <button class="header-btn">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="dashboard-content">
+      <!-- Loading State -->
+      @if (isLoading()) {
+        <div class="loading-container">
+          <div class="spinner-large"></div>
+          <p>Loading dashboard data...</p>
+        </div>
+      } @else {
+        <!-- Stats Grid -->
+        <section class="stats-section">
+          <div class="stats-grid">
+            @for (stat of stats(); track stat.title) {
+              <div class="stat-card" [class]="'stat-card--' + stat.color">
+                <div class="stat-icon">{{ stat.icon }}</div>
+                <div class="stat-content">
+                  <p class="stat-title">{{ stat.title }}</p>
+                  <p class="stat-value">{{ stat.value }}</p>
+                  @if (stat.change) {
+                    <p class="stat-change">
+                      <span class="change-icon">↑</span>
+                      {{ stat.change }}% from last month
+                    </p>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+          <div class="charts-grid">
+          
+            
+            
+
+            <!-- Donations Chart Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Donations Trend</h3>
+                <button class="card-action-btn">⋯</button>
+              </div>
+              <div class="card-body">
+                <div class="placeholder-chart">
+                  <p>Donations Chart</p>
+                  <div class="chart-bars">
+                    <div class="bar" style="height: 45%;"></div>
+                    <div class="bar" style="height: 65%;"></div>
+                    <div class="bar" style="height: 70%;"></div>
+                    <div class="bar" style="height: 80%;"></div>
+                    <div class="bar" style="height: 85%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recent Activity Section -->
+        <section class="activity-section">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent Activity</h3>
+              <button class="card-action-btn">View All</button>
+            </div>
+            <div class="card-body">
+              @if (activities().length > 0) {
+                <div class="activity-list">
+                  @for (activity of activities(); track activity.id) {
+                    <div class="activity-item">
+                      <div class="activity-icon" [class]="'activity-icon--' + activity.type">
+                        @switch (activity.type) {
+                          @case ('event') {
+                            📅
+                          }
+                          @case ('donation') {
+                            💰
+                          }
+                          @case ('member') {
+                            👤
+                          }
+                        }
+                      </div>
+                      <div class="activity-content">
+                        <p class="activity-title">{{ activity.title }}</p>
+                        <p class="activity-date">{{ formatDate(activity.date) }}</p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <p class="empty-state">No recent activity</p>
+              }
+            </div>
+          </div>
+        </section>
+      }
+    </div>
+  </main>
+</div>

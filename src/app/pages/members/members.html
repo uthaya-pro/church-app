@@ -1,0 +1,166 @@
+<div class="page-container">
+	<header class="page-header">
+		<div class="header-content">
+			<button class="back-btn" (click)="goBack()">← Back</button>
+			<h1 class="page-title">Members Management</h1>
+		</div>
+	</header>
+
+	<main class="page-content">
+		<div *ngIf="isLoading()">
+			<div class="loading-state">
+				<div class="spinner"></div>
+				<p>Loading members data...</p>
+			</div>
+		</div>
+		<div *ngIf="!isLoading()">
+			<div class="actions">
+				<button class="create-btn" (click)="showForm.set(true)">+ Create Member</button>
+			</div>
+
+			<ng-container *ngIf="showForm()">
+				<form #memberForm="ngForm" class="member-form" (ngSubmit)="submitForm(memberForm)">
+					<div class="form-row">
+						<label>Name</label>
+						<input
+							type="text"
+							[(ngModel)]="newMember.name"
+							name="name"
+							required
+							#name="ngModel"
+							[ngClass]="{'invalid': name.invalid && (name.dirty || name.touched)}"
+						/>
+						<div class="error" *ngIf="name.invalid && (name.dirty || name.touched)">
+							Name is required
+						</div>
+					</div>
+					<div class="form-row">
+						<label>Email</label>
+						<input
+							type="email"
+							[(ngModel)]="newMember.email"
+							name="email"
+							required
+							#email="ngModel"
+							[ngClass]="{'invalid': email.invalid && (email.dirty || email.touched)}"
+						/>
+						<div class="error" *ngIf="email.invalid && (email.dirty || email.touched)">
+							Valid email is required
+						</div>
+					</div>
+					<div class="form-row">
+						<label>Phone</label>
+						<input
+							type="text"
+							[(ngModel)]="newMember.phone"
+							name="phone"
+							required
+							#phone="ngModel"
+							[ngClass]="{'invalid': phone.invalid && (phone.dirty || phone.touched)}"
+						/>
+						<div class="error" *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+							Phone is required
+						</div>
+					</div>
+					<div class="form-row">
+						<label>age</label>
+						<input
+							type="text"
+							[(ngModel)]="newMember.age"
+							name="age"
+							required
+							#age="ngModel"
+							[ngClass]="{'invalid': age.invalid && (age.dirty || age.touched)}"
+						/>
+						<div class="error" *ngIf="age.invalid && (age.dirty || age.touched)">
+							Age is required
+						</div>
+					</div>
+					<div class="form-row">
+						<label>Role</label>
+						<input
+							type="text"
+							[(ngModel)]="newMember.role"
+							name="role"
+							required
+							#role="ngModel"
+							[ngClass]="{'invalid': role.invalid && (role.dirty || role.touched)}"
+						/>
+						<div class="error" *ngIf="role.invalid && (role.dirty || role.touched)">
+							Role is required
+						</div>
+					</div>
+					<div class="form-row">
+						<label>Status</label>
+						<select [(ngModel)]="newMember.status" name="status">
+							<option value="active">Active</option>
+							<option value="inactive">Inactive</option>
+							<option value="pending">Pending</option>
+						</select>
+					</div>
+					<div class="form-row">
+						<label>Join Date</label>
+						<input type="date" [(ngModel)]="newMember.joinDate" name="joinDate" />
+					</div>
+					<div class="form-actions">
+						<button type="submit" class="save-btn" [disabled]="memberForm.invalid">Save</button>
+						<button type="button" class="cancel-btn" (click)="cancelForm(memberForm)">Cancel</button>
+					</div>
+				</form>
+			</ng-container>
+			<div class="stats-bar">
+				<div class="stat">
+							<span class="stat-number">{{ totalMembers }}</span>
+							<span class="stat-label">Total Members</span>
+						</div>
+						<div class="stat">
+							<span class="stat-number">{{ activeMembers }}</span>
+							<span class="stat-label">Active Members</span>
+						</div>
+					</div>
+						<div class="filters-section">
+							<input
+								type="text"
+								placeholder="Search by member name..."
+								class="search-input"
+								[value]="searchQuery()"
+								(input)="searchQuery.set($any($event.target).value)"
+							/>
+							<select class="filter-select" [value]="filterStatus()" (change)="filterStatus.set($any($event.target).value)">
+								<option value="all">All Status</option>
+								<option value="active">Active</option>
+								<option value="inactive">Inactive</option>
+								<option value="pending">Pending</option>
+							</select>
+						</div>
+			<div class="members-grid">
+				<ng-container *ngFor="let member of getMembers(); trackBy: trackById">
+					<a class="member-card" [routerLink]="['/members', member.id]" title="View {{ member.name }}">
+						<div class="member-avatar">{{ member.name.charAt(0) }}</div>
+						<div class="member-info">
+							<h3 class="member-name">{{ member.name }}</h3>
+							<p class="member-role">{{ member.role }}</p>
+							<div class="member-details">
+								<p class="detail">Age: {{ member.age }}</p>
+								<p class="detail">📧 {{ member.email }}</p>
+								<p class="detail">📞 {{ member.phone }}</p>
+								<p class="detail">📅 Joined {{ member.joinDate | date: 'MMM y' }}</p>
+							</div>
+						</div>
+						<div class="member-footer">
+							<span class="status-badge" [class]="'status-' + member.status">
+								{{ member.status | titlecase }}
+							</span>
+						</div>
+					</a>
+					</ng-container>
+
+			<ng-container *ngIf="getMembers().length === 0">
+				<div class="empty-state">
+					<p>No members found</p>
+				</div>
+			</ng-container>
+			</div> <!-- end members-grid -->
+		</div>
+	</main>
+</div>

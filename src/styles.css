@@ -1,3 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles for Church Management System (Carbon tokens inlined) */
 
-@import "tailwindcss";
+:root {
+  --cds-ui-01: #ffffff;
+  --cds-ui-02: #f4f4f4;
+  --cds-ui-03: #e0e0e0;
+  --cds-ui-04: #c6c6c6;
+  --cds-ui-05: #a8a8a8;
+  --cds-text-01: #161616;
+  --cds-text-02: #525252;
+  --cds-interactive-01: #0f62fe;
+  --cds-interactive-02: #6f6f6f;
+  --cds-interactive-03: #ffffff;
+  --cds-interactive-04: #0f62fe;
+  --cds-interactive-focus: #0f62fe;
+  --cds-support-01: #da1e28;
+  --cds-support-02: #24a148;
+  --cds-support-03: #f1c21b;
+  --cds-support-04: #0043ce;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--cds-ui-01);
+  color: var(--cds-text-01);
+  line-height: 1.5;
+}
+
+.cds-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}

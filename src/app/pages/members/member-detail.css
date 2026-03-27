@@ -1,0 +1,91 @@
+/* reuse some of the members styles where appropriate */
+.page-container {
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.page-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #0f62fe;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease-out;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #161616;
+}
+
+.page-content {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.profile-info p {
+  margin: 0.5rem 0;
+}
+
+.profile-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.edit-btn {
+  background-color: #0f62fe;
+  color: #fff;
+}
+
+.delete-btn {
+  background-color: #da1e28;
+  color: #fff;
+}
+
+/* reuse form styles from members.css if needed */
+.profile-edit .form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.profile-edit label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.profile-edit input,
+.profile-edit select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #c6c6c6;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.profile-edit .form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
